@@ -68,10 +68,10 @@ workshop_page(_Request) :-
 		h1('Strangeloop 2013'),
 		h2('Real Development Boot Camp in '),
 		h2(\img_fix([src('/f/swipl.png')], [])),
-		\sections,
 		hr([]),
 		\start_form,
-		hr([])
+		hr([]),
+		\sections
 	    ]).
 
 start_form -->

@@ -8,24 +8,11 @@
 % Make sure we're on a reasonable version
 %
 
-%%	reasonable_version is nondet
-%
-%	succeeds if our version is 6.4.1 or better
-%
-reasonable_version :-
-	current_prolog_flag(version_data, swi(Major, _, _, _)),
-	Major > 6.
-reasonable_version :-
-	current_prolog_flag(version_data, swi(6, Minor, _, _)),
-	Minor > 3.
-reasonable_version :-
-	current_prolog_flag(version_data, swi(6, 3, Patch, _)),
-	Patch > 18.
 
-check_version :- reasonable_version, !.
+check_version :- current_prolog_flag(version, X), X >= 70116, !.
 check_version :-
       current_prolog_flag(version_data, swi(Major, Minor, Patch, _)),
-      format('OOOPS - you need swipl version 6.4.1 or better, you are on ~w.~w.~w~n',
+      format('OOOPS - you need swipl version 7.1.16 or better, you are on ~w.~w.~w~n',
 	[Major, Minor, Patch]).
 
 :- check_version.
