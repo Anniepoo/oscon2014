@@ -1,5 +1,6 @@
-:- module(strangeloop, [strangeloop_server/0]).
-/** <module> Main predicates for the demo server for strangeloop 2013
+:- module(givetalk, [strangeloop_server/0]).
+/** <module> Main predicates for the demo server for
+various talks.
 
 This module contains the main predicates for the sample server.
 It loads but does not start the server.

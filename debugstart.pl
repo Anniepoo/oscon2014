@@ -67,25 +67,6 @@ http:location(pldoc, root('help/source'), [priority(10)]).
 % as well, a workaround for one server per process
 :- doc_server(7777).
 
-% Nice thing about SWI-Prolog, the interface to most
-% development environment is fairly simple, so it's practical
-% to set your environment for your own convenience. Here, we
-% launch our first handler
-:-www_open_url('http://localhost:7777/').
-
-% and our pldoc home page
-:-www_open_url('http://localhost:7777/help/source/').
-
-% and the workshop page
-:-www_open_url('http://localhost:7777/workshop').
-
-
 % and bring up a module in the editor
-:- edit('debug.pl').
-
-% open the navigator and the cross referencer
-% put it in module user so programmer doesn't have to
-% use a module name
-user:open_tools :- prolog_ide(open_navigator),
-              prolog_ide(xref).
+:- edit('debugstart.pl').
 

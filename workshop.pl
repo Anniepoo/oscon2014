@@ -8,7 +8,7 @@
 % html_resource inclusion
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_parameters)).
-
+:- use_module(library(dcg/basics)).
 
 :- dynamic user:section_done/1.
 
@@ -60,13 +60,13 @@ restart_handler(Request) :-
 */
 workshop_page(_Request) :-
 	reply_html_page(
-	    title('Strangeloop 2013'),
+	    title('OSCON 2014'),
 	    [
 		\html_requires('/help/source/res/pldoc.css'),
 		\html_requires('/help/source/res/pldoc.js'),
 		\html_requires('/f/workshop.css'),
-		h1('Strangeloop 2013'),
-		h2('Real Development Boot Camp in '),
+		h1('OSCON 2014'),
+		h2('SWI-Prolog For The Real World'),
 		h2(\img_fix([src('/f/swipl.png')], [])),
 		hr([]),
 		\start_form,
@@ -416,165 +416,79 @@ time_remaining(Time) :-
 latest_start_time(Time) :-
 	user:start_time(Time), !.
 
-:- discontiguous
+:- dynamic
 	section_head/3,
 	timing/2,
 	priority/2,
 	subsection/2,
 	section_image/3.
 
+:- initialization read_talk.
+
+read_talk :-
+	phrase_from_file(lecture(none), '../oscontalk4.txt').
+
+
+lecture(_) --> eos.
+lecture(Section) --> blank, lecture(Section).
+lecture(_) -->
+	"*",!,
+	lazy_list_location(L),
+	string_without("\n", RestOfLine),
+	eol,
+	{
+	    gensym(sect, NewSection),
+	    atom_codes(A, RestOfLine),
+	    assertz(section_head(NewSection, A, 'workshop.pl')),
+	    format('~w section ====== ~w~n', [L, A])
+	},
+	lecture(NewSection).
+lecture(Section) -->
+	"^t=",!,
+	lazy_list_location(L),
+	integer(Time),
+	whites,
+	eol,
+	{
+	   assertz(timing(Section, Time)),
+	   format('~w ~w time = ~w~n', [L, Section, Time])
+	},
+	lecture(Section).
+lecture(Section) -->
+	"^p=",!,
+	lazy_list_location(L),
+	integer(Priority),
+	whites,
+	eol,
+	{
+	   assertz(priority(Section, Priority)),
+	   format('~w ~w priority = ~w~n', [L, Section, Priority])
+	},
+	lecture(Section).
+lecture(Section) -->
+	string_without("\n", SubSect),
+	lazy_list_location(L),
+	eol,
+	{
+	    atom_codes(A, SubSect),
+	    assertz(subsection(Section, A)),
+	    format('~w subsection ~w~n', [L, A])
+	},
+	lecture(Section).
+
+eol --> "\n".
+eol --> eos.
+
+/*
 %%	section_head(-Name:atom, -Desc:atom, -File:atom) is det
 %
-section_head(intro, 'Workshop Organization', 'workshop.pl').
-timing(intro, 5).
+section_head(intro, 'Welcome', 'cannibalsandmissionaries.pl').
+timing(intro, 3).
 priority(intro, 100).
-subsection(intro, 'Look at code for a server').
-subsection(intro, 'Play while I jabber at you').
-subsection(intro, 'Feel free to interrupt, that\'s the point').
-subsection(intro, 'Getting to the end on time is minor').
-subsection(intro, 'workshop page').
-
-section_head(troubleshoot,
-	     'Get everybody running',
-	     'debug.pl').
-%%	timing(-Name:atom, -Minutes:number) is det
-timing(troubleshoot, 15).
-%%	priority(-Name:atom, -Score:number) is det
-priority(troubleshoot, 100).
-
-section_head(starting_the_server,
-	     'The Multithreaded Server',
-	     'debug.pl').
-timing(starting_the_server, 10).
-priority(starting_the_server, 50).
-
-%%	subsection(-Name:atom, -Desc:atom) is det
-subsection(starting_the_server, 'We are our own web server').
-subsection(starting_the_server, 'The \'usual project files\' and load sequence').
-subsection(starting_the_server, 'We piggyback the pldoc server during dev mode').
-subsection(starting_the_server, 'The http_server call').
-%%	section_image(-Name:atom, -File:atom, -Desc:atom) is det
-section_image(starting_the_server,
-	      'organization.png',
-	      'Overall Server Organization').
-
-section_head(pldoc_intro,
-	     'Intro to PLDoc',
-	     '/help/source/').
-timing(pldoc_intro, 5).
-priority(pldoc_intro, 10).
-
-section_head(environment_setup,
-	     'Making A Comfy Environment',
-	     'debug.pl').
-timing(environment_setup, 10).
-priority(environment_setup, 25).
-subsection(environment_setup, portray_text).
-subsection(environment_setup, 'Firing up editor and opening pages automatically').
-subsection(environment_setup, 'Some editor tricks').
-subsection(environment_setup, 'Prolog Navigator, other IDE tools').
-subsection(environment_setup, 'Abstract URI and file paths').
-
-section_head(handlers_intro,
-	     'Introduction to Handlers',
-	     'simple_handlers.pl').
-timing(handlers_intro, 15).
-priority(handlers_intro, 75).
-subsection(handlers_intro, 'Handler basics').
-subsection(handlers_intro, 'Generating the reply by printing').
-subsection(handlers_intro, 'the Howdy handlers').
-subsection(handlers_intro, challenge('Say hi to your partner')).
-
-section_head(break1,
-	    'Break 1',
-	    'workshop.pl').
-timing(break1, 5).
-priority(break1, 100).
-
-section_head(html_generation_path,
-	     'The HTML Generation Sequence',
-	     'html_handlers.pl').
-timing(html_generation_path, 10).
-priority(html_generation_path, 50).
-section_image(html_generation_path,
-	      'html_path.png',
-	      'The sequence of events for HTML generation').
-
-section_head(html_generation,
-	     'HTML Generation',
-	     'html_handlers.pl').
-timing(html_generation, 20).
-priority(html_generation, 80).
-subsection(html_generation, 'Two Camps - templates and homoiconic').
-subsection(html_generation, 'DCGs').
-subsection(html_generation, 'Termerized HTML syntax').
-subsection(html_generation, 'Exercise').
-
-section_head(html_inclusions,
-	     'Inclusions',
-	     'html_handlers.pl').
-timing(html_inclusions, 15).
-priority(html_inclusions, 50).
-subsection(html_inclusions, 'Basics').
-subsection(html_inclusions, 'Modules').
-
-section_head(break2,
-	     'Break 2',
-	     'workshop.pl').
-timing(break2, 5).
-priority(break2, 100).
-
-section_head(html_qq,
-	     'HTML Quasiquotes',
-	     'html_handlers.pl').
-timing(html_qq, 10).
-priority(html_qq, 15).
-
-section_head(mailman,
-	     'Mailman',
-	     'mailman.pl').
-timing(mailman, 8).
-priority(mailman, 25).
-
-section_head(serving_files,
-	     'Ids and Serving Files',
-	     'fancy_handlers.pl').
-timing(serving_files, 8).
-priority(serving_files, 20).
-
-section_head(styling,
-	     'Styling',
-	     'styling_handlers.pl').
-timing(styling, 5).
-priority(styling, 25).
-
-section_head(parameter_handling,
-	     'Parameter Handling',
-	     'handle_params.pl').
-timing(parameter_handling, 7).
-priority(parameter_handling, 25).
-
-section_head(resources,
-	     'Resource Inclusion',
-	     'resourcedemo.pl').
-timing(resources,  15).
-priority(resources, 35).
-
-section_head(sessions,
-	     'Sessions',
-	     'sessions.pl').
-timing(sessions, 10).
-priority(sessions, 10).
-
-section_head(javascript,
-	     'Javascript',
-	     'clippy_demo.pl').
-timing(javascript, 5).
-priority(javascript, 5).
-
-section_head(conclusion,
-	     'Conclusion',
-	     'workshop.pl').
-timing(conclusion, 15).
-priority(conclusion, 100).
+subsection(intro, 'How many people here are programmers?').
+subsection(intro, 'If you learned Prolog in college').
+subsection(intro, 'Real language.').
+subsection(intro, 'There are a lot of large commercial sites running Prolog, notably big chunks of the phone system and the largest trade clearing house in New Zealand. I’ve personally written web applications in SWI-Prolog, as well as batch scripts, systems to manipulate RDF triples, a web spider that looks for patterns, an AI system that runs a bunch of virtual people in a virtual world, a mobile game, and pretty much everything else I could get away with writing in Prolog in the last 5 years or so.').
+subsection(intro, 'weird. no control structures, is not object oriented, executes backwards, and you don\'t have to specify the order of execution. All this is neat!').
+*/
 
