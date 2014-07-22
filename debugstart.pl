@@ -73,6 +73,6 @@ http:location(pldoc, root('help/source'), [priority(10)]).
 :- edit(urispec).
 :- edit(urispecsemantic).
 :- edit(familytree).
-:- edit(constrain_demo).
+:- edit('constrain_demo.pl').
 
 :- www_open_url('http://localhost:7777/workshop').
