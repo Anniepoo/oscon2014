@@ -445,7 +445,7 @@ read_talk :-
 	retractall(workshop:priority(_, _)),
 	retractall(workshop:subsection(_, _)),
 	retractall(workshop:section_image(_, _, _)),
-	phrase_from_file(lecture(none), '../oscontalk4.txt').
+	phrase_from_file(lecture(none), 'oscontalk4.txt').
 
 lecture(_) --> eos.
 lecture(Section) --> blank, lecture(Section).

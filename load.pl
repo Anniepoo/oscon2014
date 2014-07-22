@@ -14,4 +14,7 @@
 :- ensure_loaded(cannibalsandmissionaries).
 :- ensure_loaded(urispec).
 :- ensure_loaded(quarreling).
+:- ensure_loaded(urispecsemantic).
+
+:- [familytree].
 

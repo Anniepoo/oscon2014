@@ -1,0 +1,82 @@
+* Welcome
+^t=1
+^p=100
+Welcome to SWI-Prolog for the Real World.
+I'm Anne Ogborn
+Feel free to ask questions
+Prolog experience (hi-lo hands)
+* Language Intro
+^t=1
+^p=80
+Prolog is the most widely used logic language.
+Unknown outside academia, but influences everything
+No reason for this, it's a great language for real world use.
+I've written everything from web applications to mobile games to shell scripts with it.
+* Logic Programming
+^t=3
+^p=80
+Show family tree.
+Define facts and rules.
+Ask queries about them.
+Solves for proofs of your query.
+Prolog can be viewed as both procedural and declarative.
+Imperative languages top bottom.
+Prolog works by substituting the right hand side of rules for the query repeatedly until it finds true.
+If it fails it backs up.
+Awkward until you get it, then really neat.
+* Directly execute syntax specifications
+^t=3
+^p=30
+Here’s a backus-naur format syntax for a URL.
+You’re looking at executable code. Definite Clause Grammars are a fundamental operation in the system.
+Simply by passing the root of the syntax to phrase, I can see if it’s part of the language – that is, if it’s a well formed URL. 
+I also have a negative test, which is says is false.
+I can pass arguments so I can use semantics.
+* Debugger retry
+^t=1
+^p=15
+Prolog is stateless if you avoid assert and retract
+You can step over things in the debugger, confident that you can retry them if you get an oops
+* Constraints
+^t=4
+^p=50
+Prolog’s a logic language. Variables are either bound, meaning we know their value, or unbound, meaning we don’t.  
+Humans can say other things, like ‘I know this must be more than zero’.  
+I can do same in Prolog.
+Here's a classic problem, quarreling children. 
+The children are to be seated in a 4 by 4 grid of chairs. Some quarrel if sat next to each other.
+This problem is n! if implemented naively.
+This can substitute for the missing ability to make objects
+* Multimodal
+^t=3
+^p=25
+(new slide)
+Prolog has a predicate to append lists
+* Lots of Libraries
+^t=2
+^p=20
+(new slide)
+lots of libraries - batteries included
+language interfaces C, Java, Perl, Python, C#
+* Ecosystem
+^t=3
+^p=40
+(new slide)
+IDE - integrated editor, debugger, profiler, cross referencer, project pane
+web framework - very nice web framework based on DCG's
+Cliopatria SPARQL server and RDF integration
+Pldoc 
+pengines
+* Whats Coming?
+^t=2
+^p=30
+* Conclusion
+^t=2
+^p=100
+   office hours
+   resources -
+##prolog
+* Question
+^t=10
+^p=150
+Any questions?
