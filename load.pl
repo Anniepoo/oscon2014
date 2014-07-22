@@ -11,7 +11,7 @@
 :- ensure_loaded(html_handlers).
 :- ensure_loaded(fancy_handlers).
 :- ensure_loaded(workshop).
-
-
-
+:- ensure_loaded(cannibalsandmissionaries).
+:- ensure_loaded(urispec).
+:- ensure_loaded(quarreling).
 

@@ -70,3 +70,4 @@ http:location(pldoc, root('help/source'), [priority(10)]).
 % and bring up a module in the editor
 :- edit('debugstart.pl').
 
+:- www_open_url('http://localhost:7777/workshop').

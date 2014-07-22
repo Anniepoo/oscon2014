@@ -1,7 +1,0 @@
----+ "So You Want to Make Prolog Web Apps?"
-
----++ A flippant tutorial for newbs.
-
----+++ With no actual content.
-
-Since this is just an example.

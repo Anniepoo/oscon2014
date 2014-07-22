@@ -1,3 +1,10 @@
+:- module(urispec, [url//0]).
+
+% demo
+parse_url :- phrase(url, `http://google.com/path/to/something?x=3&y=2#frag`).
+
+parse_bad_url :- phrase(url, `htp://google.com/path/to/something?x=3&y=2#frag`).
+
 % uri syntax specification
 % from RFC 3986
 url -->
@@ -100,10 +107,4 @@ word -->
 more_word -->
 	word.
 more_word --> [].
-
-% demo
-parse_url :- phrase(url, `http://google.com/path/to/something?x=3&y=2#frag`).
-
-parse_bad_url :- phrase(url, `htp://google.com/path/to/something?x=3&y=2#frag`).
-
 

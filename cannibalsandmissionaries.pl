@@ -1,3 +1,9 @@
+:- module(cannibalsandmissionaries, [
+	      go/0,
+	      count_number_of_ways_to_cross/1,
+	      show_unique_solutions/0,
+	      show_shortest_solution/0
+	  ]).
 %
 %  Cannibals and missionaries.
 %  starting with some distribution of cannibals and missionaries

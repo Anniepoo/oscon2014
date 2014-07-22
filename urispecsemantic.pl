@@ -1,3 +1,12 @@
+:- module(urispecsemantic, [url//1]).
+% demo post 7.0 backtick codes
+parse_url(URL) :-
+	phrase(url(URL), `http://google.com/path/to/something?x=3&y=2#frag`).
+
+
+parse_bad_url(URL) :-
+	phrase(url(URL), `http://googlecom/path/to/something?x=3&y=2#frag`).
+
 % uri syntax specification
 % from RFC 3986
 url(url(Scheme, Hierarchy, Query, Fragment)) -->
@@ -128,11 +137,3 @@ more_word([C |W]) -->
 	valid_char(C),
 	more_word(W).
 more_word([]) --> [].
-
-% demo post 7.0 backtick codes
-parse_url(URL) :-
-	phrase(url(URL), `http://google.com/path/to/something?x=3&y=2#frag`).
-
-
-parse_bad_url(URL) :-
-	phrase(url(URL), `http://googlecom/path/to/something?x=3&y=2#frag`).

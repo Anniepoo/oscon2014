@@ -1,4 +1,4 @@
-:- module(workshop, []).
+:- module(workshop, [read_talk/0]).
 /** <module> Orientation page for the workshop
 
 */
@@ -13,6 +13,8 @@
 :- dynamic user:section_done/1.
 
 :- http_handler(root(sectiondone), done_handler, [id(sectiondone)]).
+
+talk_length(40).
 
 %%	done_handler(+Request:request) is det
 %
@@ -43,8 +45,9 @@ undone_handler(Request) :-
 :- http_handler(root(restart), restart_handler, [id(restart)]).
 
 restart_handler(Request) :-
+	talk_length(TL),
 	 http_parameters(Request,
-		[ restart(Restart, [between(0,180), default(-1)])
+		[ restart(Restart, [between(0,TL), default(-1)])
 		]),
 	restart_time(Restart),
 	http_redirect(moved_temporary, location_by_id(workshop), Request).
@@ -75,10 +78,13 @@ workshop_page(_Request) :-
 	    ]).
 
 start_form -->
+	{
+             talk_length(TL)
+        },
 	html([
 	    form(action('/restart'), [
 		 label(for(restart), 'Restart this many minutes into workshop:'),
-		 input([type(number), maxlength(3), min(0), max(180),
+		 input([type(number), maxlength(3), min(0), max(TL),
 			name(restart), value(0)], []),
 		 input([type(submit), name(ok), value(restart)], [])
 		 ])
@@ -91,7 +97,8 @@ start_form -->
 sections -->
 	{
 	    time_remaining(Time),
-	    MissionTime is floor(180 - Time),
+            talk_length(TL),
+	    MissionTime is floor(TL - Time),
             bagof(Name, A^B^section_head(Name, A, B), Names),
             time_restricted_unfinished_sections(Time, Names, WeWillCover, _),
             !
@@ -137,7 +144,8 @@ section(StartAt, [Name | T], WeWillCover, CurrentFound) -->
 			span(class(wall), Wall),
 			span(class(sectionlabel), Label),
 			Timing, ' mins',
-			a([class(editlink), href('#'), onClick(AFile)], 'See The File')
+			a([class(editlink), href('#'), onClick(AFile)],
+			  'See The File')
 		       ]),
 		     ul(\subsections(Subsections)),
 		     \section_images(Name, [])
@@ -158,7 +166,8 @@ section(StartsAt, [Name | T], WeWillCover, CurrentFound) -->
            )
         },
 	html(div(class([section, done]), [
-		     p([\done_section(Name), span(class([sectionlabel, done]), Label),
+		     p([\done_section(Name),
+			span(class([sectionlabel, done]), Label),
 			     Timing, ' mins',
 			     a([class(editlink), href('#'), onClick(AFile)], 'See The File')
 			    ]),
@@ -263,13 +272,16 @@ done_section(Name) -->
 	]).
 
 
+mission_start(5).
+
 %%	mission_wall(+T:number, +Wall:atom)// is det
 %
 %	convert time in mission time (minutes since start of workshop)
-%	to wall clock time starting at 9am
+%	to wall clock time starting at mission_start
 %
 mission_wall(T, Wall) :-
-	Hours is T // 60 + 9,
+	mission_start(Start),
+	Hours is T // 60 + Start,
 	Mins is T mod 60,
 	format(atom(Wall), '~w:~|~`0t~d~2+', [Hours, Mins]).
 
@@ -372,7 +384,7 @@ total_score([H|T], InScore, OutScore) :-
 
 :- dynamic user:start_time/1.
 
-user:start_time(1379518200).
+user:start_time(1406075400).
 
 %%	restart_time(+Time:int) is det
 %
@@ -390,24 +402,26 @@ restart_time(_).
 %%	time_remaining(-Time) is det
 %
 %	time remaining in the workshop in minutes
-%	prior to start reports 180
+%	prior to start reports
 %	after end reports 0
 %
 time_remaining(Time) :-
 	get_time(Now),
 	latest_start_time(Start),
 	Now < Start,
-	Time = 180.
+	talk_length(Time).
 time_remaining(Time) :-
 	get_time(Now),
 	latest_start_time(Start),
-	End is Start + 180 * 60,
+	talk_length(TL),
+	End is Start + TL * 60,
 	Now > End,
 	Time = 0.
 time_remaining(Time) :-
 	get_time(Now),
 	latest_start_time(Start),
-	Time is (Start + 180 * 60 - Now) / 60.
+	talk_length(TL),
+	Time is (Start + TL * 60 - Now) / 60.
 
 %%	latest_start_time(-Time:int) is det
 %
@@ -426,8 +440,12 @@ latest_start_time(Time) :-
 :- initialization read_talk.
 
 read_talk :-
+	retractall(workshop:section_head(_, _, _)),
+	retractall(workshop:timing(_, _)),
+	retractall(workshop:priority(_, _)),
+	retractall(workshop:subsection(_, _)),
+	retractall(workshop:section_image(_, _, _)),
 	phrase_from_file(lecture(none), '../oscontalk4.txt').
-
 
 lecture(_) --> eos.
 lecture(Section) --> blank, lecture(Section).
