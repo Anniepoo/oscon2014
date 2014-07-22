@@ -68,10 +68,6 @@ workshop_page(_Request) :-
 		\html_requires('/help/source/res/pldoc.css'),
 		\html_requires('/help/source/res/pldoc.js'),
 		\html_requires('/f/workshop.css'),
-		h1('OSCON 2014'),
-		h2('SWI-Prolog For The Real World'),
-		h2(\img_fix([src('/f/swipl.png')], [])),
-		hr([]),
 		\start_form,
 		hr([]),
 		\sections

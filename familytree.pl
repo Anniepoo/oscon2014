@@ -1,3 +1,21 @@
+:- module(familytree, [
+	      male/1,
+	      female/1,
+	      parent/2,
+	      father/2,
+	      mother/2,
+	      son/2,
+	      daughter/2,
+	      grandfather/2,
+	      aunt/2,
+	      uncle/2,
+	      sister/2,
+	      cousin/2,
+	      ancestor/2,
+	      brother/2
+	  ]).
+
+
 :- discontiguous male/1, female/1, parent/2.
 
 % The good for nothing men in my family
@@ -52,11 +70,11 @@ grandfather(GrandDad, GrandKid) :-
 	parent(GrandDad, Somebody),
 	parent(Somebody, GrandKid).
 aunt(Aunt, Kid) :-
-	sister(Aunt, Mom),
-	mother(Mom, Kid).  %can simplify with parent
-aunt(Aunt, Kid) :-
 	sister(Aunt, Dad),
 	father(Dad, Kid).
+aunt(Aunt, Kid) :-
+	sister(Aunt, Mom),
+	mother(Mom, Kid).
 sister(Sister, Sibling) :-
 	female(Sister),
 	parent(Par, Sister),
@@ -78,4 +96,4 @@ brother(X, Y) :-
 	parent(Somebody, Y),
 	X \= Y.
 
-
+:- user:use_module(familytree).

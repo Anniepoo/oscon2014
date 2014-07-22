@@ -15,6 +15,7 @@
 :- ensure_loaded(urispec).
 :- ensure_loaded(quarreling).
 :- ensure_loaded(urispecsemantic).
+:- ensure_loaded(constrain_demo).
 
 :- [familytree].
 

@@ -38,15 +38,14 @@ I can pass arguments so I can use semantics.
 Prolog is stateless if you avoid assert and retract
 You can step over things in the debugger, confident that you can retry them if you get an oops
 * Constraints
-^t=4
+^t=3
 ^p=50
 Prolog’s a logic language. Variables are either bound, meaning we know their value, or unbound, meaning we don’t.  
 Humans can say other things, like ‘I know this must be more than zero’.  
 I can do same in Prolog.
-Here's a classic problem, quarreling children. 
-The children are to be seated in a 4 by 4 grid of chairs. Some quarrel if sat next to each other.
-This problem is n! if implemented naively.
-This can substitute for the missing ability to make objects
+walk through constraint_demo
+This is really powerful. You can do many of the things you'd do with object getter/setters better this way
+It also makes solving complex problems like figuring out train schedules trivial.
 * Multimodal
 ^t=3
 ^p=25
@@ -54,7 +53,7 @@ This can substitute for the missing ability to make objects
 Prolog has a predicate to append lists
 * Lots of Libraries
 ^t=2
-^p=20
+^p=40
 (new slide)
 lots of libraries - batteries included
 language interfaces C, Java, Perl, Python, C#
@@ -68,7 +67,7 @@ Cliopatria SPARQL server and RDF integration
 Pldoc 
 pengines
 * Whats Coming?
-^t=2
+^t=3
 ^p=30
 * Conclusion
 ^t=2
